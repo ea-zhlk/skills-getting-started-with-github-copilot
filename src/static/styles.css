@@ -74,6 +74,87 @@ section h3 {
   margin-bottom: 8px;
 }
 
+.activity-participants {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #ddd;
+}
+
+.activity-participants h5 {
+  margin-bottom: 6px;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.activity-participants ul {
+  display: grid;
+  gap: 3px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.participant-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 36px;
+}
+
+.participant-email {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.activity-participants .remove-participant {
+  display: inline-grid;
+  flex: 0 0 32px;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: #666;
+}
+
+.activity-participants .remove-participant:hover {
+  background: #ffebee;
+  color: #b42318;
+}
+
+.activity-participants .remove-participant:focus-visible {
+  outline: 2px solid #1a237e;
+  outline-offset: 2px;
+}
+
+.activity-participants .remove-participant:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.activity-participants .remove-participant svg {
+  width: 17px;
+  height: 17px;
+}
+
+.participants-empty {
+  color: #666;
+  font-style: italic;
+}
+
+.participants-feedback:empty {
+  display: none;
+}
+
+.participants-error {
+  margin-top: 6px;
+  color: #c62828;
+  font-size: 0.9rem;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
