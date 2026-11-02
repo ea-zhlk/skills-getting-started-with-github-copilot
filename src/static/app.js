@@ -3,12 +3,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const activitySelect = document.getElementById("activity");
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
+  let latestActivitiesRequest = 0;
 
   // Function to fetch activities from API
   async function fetchActivities() {
+    const requestId = ++latestActivitiesRequest;
+
     try {
       const response = await fetch("/activities");
       const activities = await response.json();
+      if (requestId !== latestActivitiesRequest) {
+        return;
+      }
 
       // Clear loading message
       activitiesList.innerHTML = "";
@@ -29,8 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> <span class="availability-count">${spotsLeft} spots left</span></p>
         `;
-        const availabilityCount = activityCard.querySelector(".availability-count");
-
         const participantsSection = document.createElement("div");
         participantsSection.className = "activity-participants";
 
@@ -86,15 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   throw new Error(result.detail || "Could not unregister participant.");
                 }
 
-                details.participants.splice(details.participants.indexOf(email), 1);
-                participant.remove();
-                participantsHeading.textContent = `Participants (${details.participants.length})`;
-                availabilityCount.textContent = `${details.max_participants - details.participants.length} spots left`;
-
-                if (details.participants.length === 0) {
-                  participantsList.remove();
-                  participantsSection.insertBefore(emptyMessage, participantsFeedback);
-                }
+                await fetchActivities();
               } catch (error) {
                 participantsFeedback.textContent = error instanceof Error
                   ? error.message
@@ -126,6 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
         activitySelect.appendChild(option);
       });
     } catch (error) {
+      if (requestId !== latestActivitiesRequest) {
+        return;
+      }
+
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
       console.error("Error fetching activities:", error);
     }
